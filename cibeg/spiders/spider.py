@@ -9,7 +9,6 @@ from itemloaders.processors import TakeFirst
 
 class CibegSpider(scrapy.Spider):
 	name = 'cibeg'
-	page = 1
 	start_urls = ['https://www.cibeg.com/English/InvestorRelations/NewsGovernanceAndResearch/Pages/NewsReleases.aspx']
 
 	def parse(self, response):
@@ -19,7 +18,6 @@ class CibegSpider(scrapy.Spider):
 		next_page = response.xpath('//a[@class="AspNetPagerPrevNextButtonsClass"][text()=">"]/@href').getall()
 		if next_page:
 			argument = next_page[0].split(',')[1][1:-2]
-			self.page += 1
 			yield FormRequest.from_response(response, formdata={'__EVENTTARGET': 'ctl00$ctl54$g_1ed76902_160d_4564_ad61_d3b69cdf260c$ctl00$_aspNetContentPager', "__EVENTARGUMENT": f'{argument}'}, callback=self.parse)
 
 	def parse_post(self, response):
